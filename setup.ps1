@@ -7,7 +7,7 @@ $SetupDir="$HOME\Desktop\ServerSetup"
 
 ### Download Path
 $SakuraEditor="https://github.com/sakura-editor/sakura/releases/download/v2.4.2/sakura-tag-v2.4.2-build4203-a3e63915b-Win32-Release-Installer.zip"
-$Apache="https://www.apachelounge.com/download/VS17/binaries/httpd-2.4.57-win64-VS17.zip"
+$Apache="https://www.apachehaus.com/downloads/httpd-2.4.55-o111s-x86-vs17.zip"
 
 ### Create Setup Directory
 
@@ -32,7 +32,13 @@ if (-not(TEST-Path $SetupDir\apache)) {
   mkdir $SetupDir\apache
 }
 
-curl -L -o $SetupDir\apache\apache.zip $Apache
+wget $Apache -o $SetupDir\apache\apache.zip
 Expand-Archive -Path $SetupDir\apache\apache.zip -DestinationPath $SetupDir\apache -Force
-cp -rp $SetupDir\apache\Apache24 "C:\"
+cp -r $SetupDir\apache\Apache24 "C:\"
 
+if (-not(Test-Path "C:\Apache24")) {
+  echo "Apache does not installed"
+  exit
+} else {
+  cp C:\Apache24\httpd\conf\httpd.conf C:\Apache24\httpd\conf\httpd.conf.org
+}
